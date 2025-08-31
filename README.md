@@ -1,5 +1,3 @@
-# python-mooc-tmc-solver
-
 # MOOC Python Exercise Solver
 
 A **Streamlit web application** that lets you browse programming tasks from the [Helsinki University MOOC courses](https://ohjelmointi-25.mooc.fi/), scrape their content, and use AI agents to **automatically solve** and **analyze** student code.  
