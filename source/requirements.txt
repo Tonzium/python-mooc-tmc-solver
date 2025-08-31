@@ -1,0 +1,12 @@
+langchain-core==0.3.75
+langchain-ollama==0.3.7
+mkdocs==1.6.1
+numpy==1.26.4
+pydantic==2.11.7
+pydantic_core==2.33.2
+requests==2.32.5
+selenium==4.35.0
+setuptools==68.2.2
+streamlit==1.49.1
+webdriver-manager==4.0.2
+websocket-client==1.8.0
