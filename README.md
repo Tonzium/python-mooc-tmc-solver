@@ -19,27 +19,17 @@ The app is designed to speed up learning by providing insights, feedback, and re
 
 source/
 
-├── app.py # Main entrypoint (Streamlit app)
-
-├── ai/
-
-│ ├── agents.py # Multi-agent system for solving tasks
-
-│ └── analyzer.py # Code analysis logic
-
-├── scraping/
-
-│ └── mooc_scraper.py # Selenium scraper for MOOC exercises
-
-├── pages/
-
-│ └── exercise.py # Exercise detail page
-
-├── utils/
-
-│ └── cache.py # Cache helpers for offline use
-
-└── requirements.txt # Python dependencies
+├── app.py # Main entrypoint (Streamlit app)  
+├── ai/  
+│ ├── agents.py # Multi-agent system for solving tasks  
+│ └── analyzer.py # Code analysis logic  
+├── scraping/  
+│ └── mooc_scraper.py # Selenium scraper for MOOC exercises  
+├── pages/  
+│ └── exercise.py # Exercise detail page  
+├── utils/  
+│ └── cache.py # Cache helpers for offline use  
+└── requirements.txt # Python dependencies  
 
 
 ## 🚀 Getting Started
