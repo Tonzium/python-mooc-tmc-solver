@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+    # If you don't have GPU pass-through working, comment this out:
+    gpus: all
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:11434/api/tags"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=deepseek-r1:latest
+    ports:
+      - "3000:8080"
+    depends_on:
+      - ollama
+    volumes:
+      - openwebui:/app/backend/data
+
+  source:
+    build: ./source
+    container_name: streamlit
+    restart: unless-stopped
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
+      OLLAMA_MODEL: "deepseek-r1:latest"
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./source:/source
+
+volumes:
+  ollama:
+  openwebui:
