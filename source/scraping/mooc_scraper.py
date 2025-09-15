@@ -25,7 +25,11 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
+
+
+import os, shutil
+CHROME_BIN = os.getenv("CHROME_BIN") or shutil.which("chromium") or shutil.which("chromium-browser") or "/usr/bin/chromium"
+CHROMEDRIVER_BIN = os.getenv("CHROMEDRIVER_BIN") or shutil.which("chromedriver") or "/usr/bin/chromedriver"
 
 # ---------------------------------------------------------------------------
 # Constants & precompiled regexes
@@ -96,11 +100,11 @@ def build_driver(headless: bool = True) -> webdriver.Chrome:
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-gpu")
     opts.add_argument("--disable-dev-shm-usage")
-    # A larger viewport to ensure elements are laid out consistently.
     opts.add_argument("--window-size=1600,2200")
+    opts.binary_location = CHROME_BIN
 
-    # webdriver_manager installs (and caches) a matching driver if needed.
-    service = Service(ChromeDriverManager().install())
+    # webdriver service
+    service = Service(CHROMEDRIVER_BIN)
     return webdriver.Chrome(service=service, options=opts)
 
 
