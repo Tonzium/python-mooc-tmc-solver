@@ -32,11 +32,14 @@ import urllib.parse
 # - Ensure scheme, fill default port 11434, replace 0.0.0.0/:: with 127.0.0.1.
 # ---------------------------------------------------------------------
 def _safe_ollama_base_url() -> str:
-    raw = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434").strip()
-    # add scheme if missing
+    raw = os.environ.get("OLLAMA_HOST")
+    if not raw:
+        # inside container → talk to the Compose service
+        raw = "http://ollama:11434" if os.path.exists("/.dockerenv") else "http://127.0.0.1:11434"
+
+    raw = raw.strip()
     if "://" not in raw:
         raw = "http://" + raw
-    # normalize + replace 0.0.0.0 with 127.0.0.1 (client connect fix)
     u = urllib.parse.urlparse(raw)
     host = u.hostname or "127.0.0.1"
     if host in {"0.0.0.0", "::"}:
@@ -62,7 +65,8 @@ def build_llm(model: str, temperature: float = 0.2, **kwargs) -> ChatOllama:
     Returns a ChatOllama instance targeting the local Ollama server.
     - Uses defaults that work well for deterministic coding tasks.
     """
-    base_url = _safe_ollama_base_url()
+    #base_url = _safe_ollama_base_url()
+    base_url = "http://ollama:11434"
     # Forward a safe subset if present
     forwardable = {}
     for k in ("top_p", "num_ctx", "repeat_penalty", "stop", "request_timeout", "max_tokens"):
@@ -277,7 +281,7 @@ def _extract_python_code(text: str) -> str:
 def solve_with_agents(
     question: str,
     python_blocks: List[str],
-    model: str = "deepseek-r1:latest",
+    model: str = os.getenv("OLLAMA_MODEL", "deepseek-r1:latest")
 ) -> Tuple[str, Dict[str, Any]]:
     """
     Orchestrates Context → Coding. Returns (solution_code, context_as_dict).
