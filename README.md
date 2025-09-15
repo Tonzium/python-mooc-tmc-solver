@@ -37,26 +37,24 @@ source/
 ### 1. Clone the repository
 ```bash
 git clone https://gitlab.com/yourusername/mooc-python-solver.git
-cd mooc-python-solver
+cd python-mooc-tmc-solver
 ```
 
-### 2. Install dependencies
-Use a virtual environment (recommended):
+### 2. Compose Docker
+Start services (app + Ollama)
 ```bash
-python -m venv .venv
-source .venv/bin/activate   # on Linux / macOS
-.venv\Scripts\activate      # on Windows
-
-pip install -r requirements.txt
+docker compose up -d --build
 ```
 
-### 3. Run the app
-
+### 2. Pull the model
+Docker container needs model to run it locally
 ```bash
-streamlit run source/app.py
+docker compose exec ollama ollama pull deepseek-r1:latest
 ```
 
-The app will open at http://localhost:8501
+### 3. Open the app
+
+Streamlit UI at: http://localhost:8501
 
 ## Author
 
